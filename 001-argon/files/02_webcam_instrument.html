@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>웹캠 핸드 신디사이저</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Malgun Gothic', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #startBtn {
+      padding: 20px 50px;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #00E676;
+      color: #000;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 0 20px rgba(0, 230, 118, 0.5);
+      transition: transform 0.2s;
+      z-index: 10;
+    }
+    #startBtn:hover {
+      transform: scale(1.05);
+    }
+    .container {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      display: none;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    }
+    video {
+      display: none;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1); /* 거울 모드 */
+    }
+    #noteDisplay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 120px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.85);
+      text-shadow: 0 0 30px #000, 0 0 10px #00E676;
+      pointer-events: none;
+      user-select: none;
+    }
+    #guide {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+      color: #ccc;
+      text-shadow: 0 0 5px #000;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="startBtn">시작</button>
+
+  <div class="container" id="appContainer">
+    <video id="webcam" playsinline></video>
+    <canvas id="outputCanvas" width="800" height="600"></canvas>
+    <div id="noteDisplay">-</div>
+    <div id="guide">위아래 이동: 음 높이 조절 | 손 쥐기/펴기: 음량 조절</div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const appContainer = document.getElementById('appContainer');
+    const videoElement = document.getElementById('webcam');
+    const canvasElement = document.getElementById('outputCanvas');
+    const canvasCtx = canvasElement.getContext('2d');
+    const noteDisplay = document.getElementById('noteDisplay');
+
+    let audioCtx, oscillator, gainNode;
+    let isPlaying = false;
+
+    // 도레미파솔라시도 음계 데이터 (4옥타브~5옥타브)
+    const notes = [
+      { name: '도', freq: 261.63 },
+      { name: '레', freq: 293.66 },
+      { name: '미', freq: 329.63 },
+      { name: '파', freq: 349.23 },
+      { name: '솔', freq: 392.00 },
+      { name: '라', freq: 440.00 },
+      { name: '시', freq: 493.88 },
+      { name: '도', freq: 523.25 }
+    ];
+
+    function initAudio() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      oscillator = audioCtx.createOscillator();
+      gainNode = audioCtx.createGain();
+
+      oscillator.type = 'triangle'; // 부드러운 신디사이저 음색
+      oscillator.frequency.setValueAtTime(261.63, audioCtx.currentTime);
+      
+      gainNode.gain.setValueAtTime(0, audioCtx.currentTime); // 초기 음량 0
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      oscillator.start();
+      isPlaying = true;
+    }
+
+    // 손이 펴진 정도를 계산 (손목과 손가락 끝들의 평균 거리 / 손 크기 기준)
+    function getHandOpenness(landmarks) {
+      const wrist = landmarks[0];
+      const middleMcp = landmarks[9]; // 중지 뿌리 (손 크기 기준점)
+      
+      // 손의 기본 크기 측정 (카메라와의 거리에 따른 보정용)
+      const palmSize = Math.hypot(middleMcp.x - wrist.x, middleMcp.y - wrist.y);
+      
+      // 4개 손가락 끝(검지~소지)과 손목 사이의 평균 거리
+      const tips = [8, 12, 16, 20];
+      let totalDist = 0;
+      tips.forEach(idx => {
+        const tip = landmarks[idx];
+        totalDist += Math.hypot(tip.x - wrist.x, tip.y - wrist.y);
+      });
+      const avgDist = totalDist / 4;
+      
+      const ratio = avgDist / palmSize;
+      // 주먹 쥐었을 때 약 0.8~1.0, 폈을 때 약 1.8~2.2
+      let openness = (ratio - 0.9) / 1.0;
+      return Math.max(0, Math.min(1, openness)); // 0 ~ 1 사이로 제한
+    }
+
+    function onResults(results) {
+      canvasCtx.save();
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+
+        // 손 관절 그리기
+        drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {color: '#00E676', lineWidth: 4});
+        drawLandmarks(canvasCtx, landmarks, {color: '#FF1744', lineWidth: 2, radius: 4});
+
+        // 1. 음 높이 계산 (중지 뿌리(9번)의 Y 좌표 기준)
+        // 화면 위(0)가 높은 음, 화면 아래(1)가 낮은 음이 되도록 반전
+        let y = 1 - landmarks[9].y;
+        // 화면 끝까지 안 가도 되도록 여백 보정 (0.15 ~ 0.85 구간 사용)
+        y = (y - 0.15) / 0.7;
+        y = Math.max(0, Math.min(0.99, y));
+
+        const noteIndex = Math.floor(y * notes.length);
+        const selectedNote = notes[noteIndex];
+
+        // 2. 음량 계산 (손 쥐었다 펴기)
+        const volume = getHandOpenness(landmarks);
+
+        // 3. 오디오 및 UI 업데이트
+        if (isPlaying) {
+          // 부드러운 소리 전환을 위해 setTargetAtTime 사용
+          oscillator.frequency.setTargetAtTime(selectedNote.freq, audioCtx.currentTime, 0.03);
+          gainNode.gain.setTargetAtTime(volume * 0.5, audioCtx.currentTime, 0.05); // 최대 볼륨 0.5 제한
+        }
+
+        if (volume < 0.05) {
+          noteDisplay.innerText = "음소거";
+          noteDisplay.style.color = "rgba(255, 255, 255, 0.3)";
+        } else {
+          noteDisplay.innerText = selectedNote.name;
+          noteDisplay.style.color = `rgba(255, 255, 255, ${0.3 + volume * 0.7})`;
+          noteDisplay.style.transform = `translate(-50%, -50%) scale(${0.8 + volume * 0.5})`;
+        }
+
+      } else {
+        // 손이 인식되지 않을 때 소리 끔
+        if (isPlaying) {
+          gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+        }
+        noteDisplay.innerText = "-";
+        noteDisplay.style.color = "rgba(255, 255, 255, 0.3)";
+        noteDisplay.style.transform = `translate(-50%, -50%) scale(1)`;
+      }
+      canvasCtx.restore();
+    }
+
+    const hands = new Hands({locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+    }});
+
+    hands.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.6,
+      minTrackingConfidence: 0.6
+    });
+
+    hands.onResults(onResults);
+
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({image: videoElement});
+      },
+      width: 800,
+      height: 600
+    });
+
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      appContainer.style.display = 'block';
+      noteDisplay.innerText = "로딩중...";
+      
+      initAudio();
+      camera.start();
+    });
+  </script>
+</body>
+</html>

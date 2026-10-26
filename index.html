@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>테크조간 자료실</title>
+<meta name="description" content="테크조간 영상에서 약속한 자료를 모아 둔 곳.">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: one lab-notebook column; each experiment is an entry with its measured time, tokens and cost, what we verified, the prompt to copy, and the result to open */
+:root {
+  --bg:#eceff3; --surface:#ffffff; --ink:#16181c; --muted:#5b616b; --rule:#d5d9df; --accent:#c4560c; --accent-soft:#fbe7d8; --code:#f4f6f8;
+  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#101215; --surface:#181b20; --ink:#eceef2; --muted:#a3a9b3; --rule:#2b3038; --accent:#f07a28; --accent-soft:#3a2416; --code:#0c0e11; color-scheme:dark; } }
+:root[data-theme="dark"] { --bg:#101215; --surface:#181b20; --ink:#eceef2; --muted:#a3a9b3; --rule:#2b3038; --accent:#f07a28; --accent-soft:#3a2416; --code:#0c0e11; color-scheme:dark; }
+* { box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.65; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:28px 64px; word-break:keep-all; overflow-wrap:anywhere; }
+.wrap { max-width:46rem; margin:0 auto; display:grid; gap:28px; }
+header { display:grid; gap:10px; }
+.brand { font-size:13px; letter-spacing:.08em; color:var(--muted); font-weight:500; }
+h1 { font-family:var(--display); font-weight:400; font-size:clamp(34px, 8vw, 52px); line-height:1.1; margin:0; text-wrap:balance; }
+h1 em { font-style:normal; color:var(--accent); }
+.lead { margin:0; max-width:40em; }
+.kits { display:grid; gap:12px; }
+.kit { display:grid; grid-template-columns:auto minmax(0,1fr); gap:16px; align-items:center; background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:12px; text-decoration:none; color:var(--ink); }
+.kit:hover { border-color:var(--accent); }
+.kit:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.kit img { width:88px; height:88px; object-fit:cover; border-radius:8px; background:#000; }
+.kit h2 { font-size:19px; margin:0; }
+.kit p { margin:2px 0 0; color:var(--muted); font-size:14.5px; }
+.kit .meta { font-family:var(--mono); font-size:12.5px; }
+footer { color:var(--muted); font-size:13.5px; border-top:1px solid var(--rule); padding-top:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">테크조간 · 혁신? 일단 의심</div>
+    <h1>테크조간 <em>자료실</em></h1>
+    <p class="lead">영상에서 드린다고 한 자료를 여기 모읍니다. 전부 직접 돌려 보고 확인한 것만 올립니다.</p>
+  </header>
+  <div class="kits">
+    <a class="kit" href="001-argon/"><img src="001-argon/img/01.jpg" alt=""><div><h2>아르곤이 짠 코드 모음집</h2><p>구글 제미나이 4 아르곤에게 시킨 일곱 가지, 주문문과 결과 파일</p><p class="meta">001 · 2026. 10. 27.</p></div></a>
+  </div>
+  <footer>youtube.com/@테크조간</footer>
+</div>
+</body>
+</html>

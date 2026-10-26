@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>연간 실적 대시보드</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-main: #ffffff;
+      --text-sub: #a0a0a0;
+      --accent-blue: #4dabf7;
+      --accent-green: #69db7c;
+      --accent-orange: #ffa94d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--text-main);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .card-sub {
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+
+    .val-blue { color: var(--accent-blue); }
+    .val-green { color: var(--accent-green); }
+    .val-orange { color: var(--accent-orange); }
+
+    .chart-container {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      position: relative;
+      height: 55vh;
+      min-height: 350px;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .chart-container {
+        padding: 10px;
+        height: 45vh;
+        min-height: 300px;
+      }
+      .card-value { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📊 연간 매출 및 방문객 대시보드</h1>
+    
+    <!-- KPI 카드 영역 -->
+    <div class="kpi-grid">
+      <div class="card">
+        <div class="card-title">연 매출 합계</div>
+        <div class="card-value val-blue" id="total-sales">-</div>
+        <div class="card-sub" id="total-sales-sub" style="color: var(--text-sub);"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">가장 잘 된 달 (최고 매출)</div>
+        <div class="card-value val-orange" id="best-month">-</div>
+        <div class="card-sub" id="best-month-sub" style="color: var(--text-sub);"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">전년 대비 성장률</div>
+        <div class="card-value val-green" id="yoy-growth">-</div>
+        <div class="card-sub" id="yoy-growth-sub" style="color: var(--text-sub);"></div>
+      </div>
+    </div>
+
+    <!-- 차트 영역 -->
+    <div class="chart-container">
+      <canvas id="dashboardChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // 원본 데이터
+    const rawData = [
+      { month: 1, sales: 1820, visitors: 2410, prevSales: 1650 },
+      { month: 2, sales: 1690, visitors: 2230, prevSales: 1600 },
+      { month: 3, sales: 2050, visitors: 2710, prevSales: 1880 },
+      { month: 4, sales: 2240, visitors: 2950, prevSales: 2010 },
+      { month: 5, sales: 2610, visitors: 3380, prevSales: 2290 },
+      { month: 6, sales: 2480, visitors: 3220, prevSales: 2350 },
+      { month: 7, sales: 2930, visitors: 3810, prevSales: 2570 },
+      { month: 8, sales: 3120, visitors: 4020, prevSales: 2700 },
+      { month: 9, sales: 2560, visitors: 3360, prevSales: 2410 },
+      { month: 10, sales: 2390, visitors: 3150, prevSales: 2240 },
+      { month: 11, sales: 2150, visitors: 2840, prevSales: 2060 },
+      { month: 12, sales: 2870, visitors: 3690, prevSales: 2620 }
+    ];
+
+    // 1. 핵심 지표(KPI) 계산
+    const totalSales = rawData.reduce((acc, cur) => acc + cur.sales, 0);
+    const totalPrevSales = rawData.reduce((acc, cur) => acc + cur.prevSales, 0);
+    const totalVisitors = rawData.reduce((acc, cur) => acc + cur.visitors, 0);
+    
+    const bestMonthObj = rawData.reduce((max, cur) => cur.sales > max.sales ? cur : max, rawData[0]);
+    
+    const diffSales = totalSales - totalPrevSales;
+    const yoyRate = ((diffSales / totalPrevSales) * 100).toFixed(1);
+
+    // 2. KPI 카드 렌더링
+    document.getElementById('total-sales').innerText = `${totalSales.toLocaleString()}만 원`;
+    document.getElementById('total-sales-sub').innerText = `총 방문객 ${totalVisitors.toLocaleString()}명`;
+
+    document.getElementById('best-month').innerText = `${bestMonthObj.month}월 (${bestMonthObj.sales.toLocaleString()}만 원)`;
+    document.getElementById('best-month-sub').innerText = `방문객 ${bestMonthObj.visitors.toLocaleString()}명`;
+
+    document.getElementById('yoy-growth').innerText = `+${yoyRate}%`;
+    document.getElementById('yoy-growth-sub').innerText = `전년 대비 +${diffSales.toLocaleString()}만 원 증가`;
+
+    // 3. 차트 생성
+    const ctx = document.getElementById('dashboardChart').getContext('2d');
+    
+    Chart.defaults.color = '#a0a0a0';
+    Chart.defaults.borderColor = '#333333';
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: rawData.map(d => `${d.month}월`),
+        datasets: [
+          {
+            type: 'line',
+            label: '방문객 (명)',
+            data: rawData.map(d => d.visitors),
+            borderColor: '#ffa94d',
+            backgroundColor: '#ffa94d',
+            borderWidth: 3,
+            pointBackgroundColor: '#1e1e1e',
+            pointBorderColor: '#ffa94d',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            tension: 0.3,
+            yAxisID: 'y1',
+            order: 1
+          },
+          {
+            type: 'bar',
+            label: '올해 매출 (만원)',
+            data: rawData.map(d => d.sales),
+            backgroundColor: 'rgba(77, 171, 247, 0.8)',
+            hoverBackgroundColor: 'rgba(77, 171, 247, 1)',
+            borderRadius: 6,
+            yAxisID: 'y',
+            order: 2
+          },
+          {
+            type: 'bar',
+            label: '전년 매출 (만원)',
+            data: rawData.map(d => d.prevSales),
+            backgroundColor: 'rgba(255, 255, 255, 0.15)',
+            hoverBackgroundColor: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: 6,
+            yAxisID: 'y',
+            order: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              padding: 20,
+              color: '#ffffff'
+            }
+          },
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: '#ffffff',
+            bodyColor: '#e0e0e0',
+            padding: 12,
+            cornerRadius: 8
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false }
+          },
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+              display: true,
+              text: '매출 (만원)',
+              color: '#4dabf7'
+            },
+            suggestedMin: 0
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            title: {
+              display: true,
+              text: '방문객 (명)',
+              color: '#ffa94d'
+            },
+            grid: {
+              drawOnChartArea: false // 오른쪽 축 그리드 숨김 (겹침 방지)
+            },
+            suggestedMin: 1000
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
