@@ -3,157 +3,126 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>아르곤 코드 모음집</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
-<meta name="description" content="구글 제미나이 4 아르곤에게 시킨 일곱 가지. 첫 결과 그대로의 주문문, 결과 파일, 걸린 시간과 비용, 직접 확인한 내용.">
+<title>아르곤이 짠 코드 모음집 · 테크조간</title>
+<meta name="description" content="구글 제미나이 4 아르곤에게 시킨 결과를 주문문, 결과 파일, 걸린 시간과 비용, 직접 확인한 내용과 함께 모았습니다.">
 <meta property="og:title" content="아르곤이 짠 코드 모음집 · 테크조간">
-<meta property="og:description" content="구글 제미나이 4 아르곤에게 시킨 일곱 가지. 첫 결과 그대로의 주문문, 결과 파일, 걸린 시간과 비용, 직접 확인한 내용.">
+<meta property="og:description" content="구글 제미나이 4 아르곤에게 시킨 결과를 주문문, 결과 파일, 걸린 시간과 비용, 직접 확인한 내용과 함께 모았습니다.">
 <meta property="og:image" content="https://techjogan.github.io/001-argon/img/01.jpg">
+<meta name="theme-color" content="#111111">
 <link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one lab-notebook column; each experiment is an entry with its measured time, tokens and cost, what we verified, the prompt to copy, and the result to open */
+/* Layout: brand-dark single column; the wordmark leads, hairlines separate entries, orange only on the primary action and small labels */
 :root {
-  --bg:#eceff3; --surface:#ffffff; --ink:#16181c; --muted:#5b616b; --rule:#d5d9df; --accent:#c4560c; --accent-soft:#fbe7d8; --code:#f4f6f8;
-  --display:"Black Han Sans","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --bg:#111111; --panel:#1a1a1a; --line:#2a2a2a; --text:#f2f2f0; --sub:#c9ccd2; --dim:#8b8e94; --orange:#e26a14; --orange-hi:#f37d2b;
+  --sans:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,"Pretendard Variable",monospace;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#101215; --surface:#181b20; --ink:#eceef2; --muted:#a3a9b3; --rule:#2b3038; --accent:#f07a28; --accent-soft:#3a2416; --code:#0c0e11; color-scheme:dark; } }
-:root[data-theme="dark"] { --bg:#101215; --surface:#181b20; --ink:#eceef2; --muted:#a3a9b3; --rule:#2b3038; --accent:#f07a28; --accent-soft:#3a2416; --code:#0c0e11; color-scheme:dark; }
 * { box-sizing:border-box; }
-body { background:var(--bg); color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.65; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:28px 64px; word-break:keep-all; overflow-wrap:anywhere; }
-.wrap { max-width:46rem; margin:0 auto; display:grid; gap:28px; }
-header { display:grid; gap:10px; }
-.brand { font-size:13px; letter-spacing:.08em; color:var(--muted); font-weight:500; }
-h1 { font-family:var(--display); font-weight:400; font-size:clamp(34px, 8vw, 52px); line-height:1.1; margin:0; text-wrap:balance; }
-h1 em { font-style:normal; color:var(--accent); }
-.lead { margin:0; max-width:40em; }
-.how { background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:6px 18px; }
-.how dl { margin:0; display:grid; }
-.how .row { display:grid; grid-template-columns:8.5em 1fr; gap:12px; padding:12px 0; border-top:1px solid var(--rule); }
-.how .row:first-child { border-top:0; }
+html { background:var(--bg); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.7; letter-spacing:-0.01em; word-break:keep-all; overflow-wrap:anywhere;
+  padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); padding-block:max(20px, env(safe-area-inset-top, 0px)) 72px; -webkit-font-smoothing:antialiased; }
+a { color:inherit; }
+.wrap { max-width:47rem; margin:0 auto; }
+.top { display:flex; align-items:center; justify-content:space-between; padding-block:8px 36px; }
+.top img { height:22px; width:auto; display:block; }
+.top span { font-size:13px; color:var(--dim); }
+.label { font-family:var(--mono); font-size:12.5px; color:var(--dim); letter-spacing:0; font-variant-numeric:tabular-nums; }
+h1 { font-size:clamp(30px, 6.6vw, 46px); line-height:1.18; font-weight:800; letter-spacing:-0.04em; margin:10px 0 0; text-wrap:balance; }
+.lead { color:var(--sub); margin:16px 0 0; max-width:38em; }
+.stats { display:flex; flex-wrap:wrap; margin:28px 0 0; padding:0; list-style:none; }
+.stats li { padding-right:22px; margin-right:22px; border-right:1px solid var(--line); }
+.stats li:last-child { border-right:0; margin-right:0; padding-right:0; }
+.stats b { font-size:26px; font-weight:700; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; }
+.stats small { font-size:13.5px; color:var(--dim); margin-left:4px; }
+.sec-title { font-size:13px; font-weight:700; color:var(--orange); margin:0 0 6px; }
+.how { margin:44px 0 0; }
+.how dl { margin:0; }
+.how .row { display:grid; grid-template-columns:7.5em minmax(0, 1fr); gap:16px; padding:14px 0; border-top:1px solid var(--line); }
 .how dt { font-weight:700; }
-.how dd { margin:0; color:var(--ink); min-width:0; }
-.list { display:grid; gap:18px; }
-.item { background:var(--surface); border:1px solid var(--rule); border-radius:12px; overflow:hidden; display:grid; }
-.item.has-media { grid-template-columns:minmax(0, 15rem) minmax(0, 1fr); }
-.media { background:#000; display:flex; align-items:center; justify-content:center; min-height:100%; }
-.media img { width:100%; height:100%; object-fit:cover; display:block; }
-.noimg { color:#c9ccd2; font-size:14px; text-align:center; padding:24px; line-height:1.5; }
-.text { padding:18px 20px 20px; display:grid; gap:10px; min-width:0; align-content:start; }
-h2 { font-size:21px; margin:0; line-height:1.3; text-wrap:balance; }
-.what { margin:0; }
-.meta { margin:0; font-family:var(--mono); font-size:13.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
-.check { margin:0; font-size:14.5px; color:var(--muted); display:flex; gap:8px; align-items:baseline; }
-.tag { flex:none; font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:1px 7px; }
-.open { justify-self:start; font-weight:700; color:var(--surface); background:var(--ink); text-decoration:none; padding:9px 16px; border-radius:8px; }
-.actions { display:flex; flex-wrap:wrap; gap:8px; }
-.dl { font-weight:700; color:var(--ink); border:1px solid var(--rule); text-decoration:none; padding:8px 15px; border-radius:8px; }
-.dl:hover { border-color:var(--accent); color:var(--accent); }
-.inline-dl { color:var(--accent); }
-.back { color:var(--muted); font-size:13.5px; text-decoration:none; }
-.open:hover { background:var(--accent); }
-.dl:focus-visible, .open:focus-visible, .copy:focus-visible, summary:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
-.block { border:1px solid var(--rule); border-radius:10px; overflow:hidden; min-width:0; }
-.block-head { display:flex; justify-content:space-between; align-items:center; padding:6px 8px 6px 12px; font-size:13px; color:var(--muted); border-bottom:1px solid var(--rule); }
-.copy { font:inherit; font-weight:700; color:var(--accent); background:transparent; border:1px solid var(--rule); border-radius:6px; padding:3px 12px; cursor:pointer; }
-pre { margin:0; padding:12px; background:var(--code); font-family:var(--mono); font-size:13px; line-height:1.55; white-space:pre-wrap; max-height:16rem; overflow:auto; }
-details { border:1px solid var(--rule); border-radius:10px; overflow:hidden; }
-summary { cursor:pointer; padding:8px 12px; font-weight:700; font-size:14.5px; }
-details pre { max-height:28rem; border-top:1px solid var(--rule); }
-footer { color:var(--muted); font-size:13.5px; display:grid; gap:4px; border-top:1px solid var(--rule); padding-top:16px; }
-@media (max-width: 620px) { .item.has-media { grid-template-columns:1fr; } .media { max-height:15rem; } .how .row { grid-template-columns:1fr; gap:2px; } }
+.how dd { margin:0; color:var(--sub); }
+.items { margin:52px 0 0; }
+.item { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:28px; padding:32px 0; border-top:1px solid var(--line); }
+.shot { border-radius:10px; overflow:hidden; background:#000; aspect-ratio:4 / 3; max-width:100%; }
+.shot img { width:100%; height:100%; object-fit:cover; display:block; }
+.shot.empty { display:flex; align-items:flex-end; padding:16px; background:var(--panel); border:1px solid var(--line); }
+.shot.empty p { margin:0; font-size:14px; color:var(--dim); line-height:1.5; }
+.shot.empty p::after { content:""; display:inline-block; width:0.5em; height:0.12em; background:var(--orange); margin-left:4px; }
+.body { display:grid; gap:12px; align-content:start; min-width:0; }
+.kind { font-family:var(--mono); font-size:12px; color:var(--orange); letter-spacing:0; }
+h2 { font-size:23px; line-height:1.3; font-weight:700; letter-spacing:-0.03em; margin:-4px 0 0; text-wrap:balance; }
+.what { margin:0; color:var(--sub); }
+.meta { margin:0; font-family:var(--mono); font-size:12.5px; color:var(--dim); font-variant-numeric:tabular-nums; letter-spacing:0; }
+.check { margin:0; font-size:14.5px; color:var(--sub); padding-left:12px; border-left:2px solid var(--orange); }
+.check b { color:var(--text); font-weight:700; margin-right:6px; }
+.actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+.btn { display:inline-flex; align-items:center; gap:6px; font-size:15px; font-weight:700; text-decoration:none; padding:10px 16px; border-radius:8px; border:1px solid var(--line); color:var(--text); background:transparent; transition:border-color .15s, background .15s; }
+.btn.primary { background:var(--orange); border-color:var(--orange); color:#111; }
+.btn.primary:hover { background:var(--orange-hi); border-color:var(--orange-hi); }
+.btn:hover { border-color:var(--sub); }
+.btn:focus-visible, .copy:focus-visible, summary:focus-visible, .kit:focus-visible, .top a:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
+.prompt { background:var(--panel); border-radius:10px; overflow:hidden; min-width:0; }
+.prompt-head { display:flex; justify-content:space-between; align-items:center; padding:8px 8px 8px 14px; font-size:13px; color:var(--dim); border-bottom:1px solid var(--line); }
+.prompt-head a { color:var(--orange); }
+.copy { font:inherit; font-size:13px; font-weight:700; color:var(--text); background:#262626; border:0; border-radius:6px; padding:4px 12px; cursor:pointer; }
+.copy:hover { background:#303030; }
+.prompt pre { margin:0; padding:14px; font-family:var(--sans); font-size:14.5px; line-height:1.65; color:var(--sub); white-space:pre-wrap; max-height:15rem; overflow:auto; }
+.prompt pre.code, details pre { font-family:var(--mono); font-size:13px; line-height:1.6; letter-spacing:0; }
+details { background:var(--panel); border-radius:10px; overflow:hidden; }
+summary { cursor:pointer; padding:10px 14px; font-weight:700; font-size:14.5px; list-style:none; display:flex; justify-content:space-between; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:"+"; color:var(--dim); font-weight:400; }
+details[open] summary::after { content:"−"; }
+details pre { margin:0; padding:14px; color:var(--sub); white-space:pre-wrap; max-height:30rem; overflow:auto; border-top:1px solid var(--line); }
+footer { margin-top:56px; padding-top:24px; border-top:1px solid var(--line); display:grid; gap:6px; font-size:13.5px; color:var(--dim); }
+footer img { height:18px; width:auto; margin-bottom:8px; }
+.hub-head { padding-block:24px 8px; }
+.hub-head img { height:48px; width:auto; display:block; }
+.tagline { margin:18px 0 0; font-size:20px; font-weight:700; line-height:1.35; letter-spacing:-0.02em; }
+.tagline span { color:var(--sub); } .tagline em { font-style:normal; color:var(--orange); }
+.kits { margin:44px 0 0; }
+.kit { display:grid; grid-template-columns:6.5rem minmax(0, 1fr); gap:18px; align-items:center; padding:20px 0; border-top:1px solid var(--line); text-decoration:none; }
+.kit img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; display:block; }
+.kit h2 { font-size:20px; margin:4px 0 0; }
+.kit p { margin:4px 0 0; color:var(--sub); font-size:15px; }
+.kit:hover h2 { color:var(--orange); }
+@media (max-width: 680px) {
+  .item { grid-template-columns:1fr; gap:18px; padding:28px 0; }
+  .shot { aspect-ratio:16 / 10; }
+  .how .row { grid-template-columns:1fr; gap:2px; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
 </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <a class="back" href="../">← 테크조간 자료실</a>
-    <div class="brand">테크조간 · 혁신? 일단 의심</div>
-    <h1>아르곤이 짠 <em>코드 모음집</em></h1>
-    <p class="lead">구글 제미나이 4 아르곤에게 일곱 가지를 시켰습니다. 한 번 시키고 고치지 않은 첫 결과 그대로입니다. 남산타워 하나만 오류가 나서 한 번 고치라고 했습니다. 전부 합쳐 약 540원 들었습니다.</p>
-  </header>
-  <section class="how" aria-label="아르곤 쓰는 곳">
-    <dl>
-      <div class="row"><dt>제미나이 앱</dt><dd>AI Pro(월 20달러)나 Ultra 구독자만 됩니다. 모델에서 아르곤을 고르고 아래 주문문을 붙여 넣으십시오.</dd></div>
-      <div class="row"><dt>API</dt><dd>AI 스튜디오에서 키를 받고 결제를 등록해야 합니다. 무료 구간은 없습니다. 100만 토큰당 입력 2달러, 출력 10달러(11월 30일까지), 12월 1일부터 4달러, 20달러입니다.</dd></div>
-      <div class="row"><dt>구독이 없다면</dt><dd>결과 파일은 아르곤 없이도 브라우저에서 바로 열립니다. 열어 보고 고쳐 보십시오.</dd></div>
-    </dl>
-  </section>
-  <div class="list">
-<article class="item has-media" id="turtle">
-  <div class="media"><img src="img/01.jpg" alt="3D 거북선 결과 화면" loading="lazy"></div>
-  <div class="text">
-    <h2>3D 거북선</h2>
-    <p class="what">영상에 나온 그 거북선입니다. 바다 위에서 천천히 돌고, 마우스로 돌려 볼 수 있습니다.</p>
-    <p class="meta">68초 · 출력 5,495토큰 · 약 80원</p>
-    <p class="check"><span class="tag">확인</span>한 번에 나온 그대로입니다. 오류 없이 열립니다.</p>
-    <div class="actions"><a class="open" href="files/01_turtle_3d.html" target="_blank" rel="noopener">결과 열기</a><a class="dl" href="files/01_turtle_3d.html" download>파일 받기</a></div>
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-turtle">복사</button></div><pre id="p-turtle">three.js로 조선 시대 거북선을 3D로 만들어 줘.
+<body><div class="wrap">
+<div class="top"><a href="../" aria-label="테크조간 자료실"><img src="../wordmark.png" alt="테크조간"></a><span>자료실</span></div>
+<div class="label">001 · 2026. 10. 27. · 구글 제미나이 4 아르곤</div>
+<h1>아르곤이 짠 코드 모음집</h1>
+<p class="lead">구글 제미나이 4 아르곤에게 일곱 가지를 시켰습니다. 한 번 시키고 고치지 않은 첫 결과 그대로입니다. 남산타워 하나만 오류가 나서 한 번 고치라고 했습니다.</p>
+<ul class="stats"><li><b>7</b><small>가지</small></li><li><b>약 540</b><small>원 들었음</small></li><li><b>1</b><small>번 고침</small></li></ul>
+<section class="how"><p class="sec-title">아르곤 쓰는 곳</p><dl><div class="row"><dt>제미나이 앱</dt><dd>AI Pro(월 20달러)나 Ultra 구독자만 됩니다. 모델에서 아르곤을 고르고 아래 주문문을 붙여 넣으십시오.</dd></div><div class="row"><dt>API</dt><dd>AI 스튜디오에서 키를 받고 결제를 등록해야 합니다. 무료 구간은 없습니다. 100만 토큰당 입력 2달러, 출력 10달러(11월 30일까지), 12월 1일부터 4달러, 20달러입니다.</dd></div><div class="row"><dt>구독이 없다면</dt><dd>결과 파일은 아르곤 없이도 브라우저에서 바로 열립니다. 열어 보고 고쳐 보십시오.</dd></div></dl></section>
+<section class="items"><article class="item" id="turtle"><div class="shot"><img src="img/01.jpg" alt="3D 거북선 결과 화면" loading="lazy"></div><div class="body"><div class="kind">3D 장면</div><h2>3D 거북선</h2><p class="what">영상에 나온 그 거북선입니다. 바다 위에서 천천히 돌고, 마우스로 돌려 볼 수 있습니다.</p><p class="meta">68초 · 출력 5,495토큰 · 약 80원</p><p class="check"><b>확인</b>한 번에 나온 그대로입니다. 오류 없이 열립니다.</p><div class="actions"><a class="btn primary" href="files/01_turtle_3d.html" target="_blank" rel="noopener">결과 열기 →</a><a class="btn" href="files/01_turtle_3d.html" download>파일 받기</a></div><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-turtle">복사</button></div><pre id="p-turtle">three.js로 조선 시대 거북선을 3D로 만들어 줘.
 - HTML 파일 하나로, three.js는 CDN에서 불러와.
 - 거북선은 바다 위에 떠 있고, 천천히 한 바퀴 돌아가게 해 줘. 마우스로 돌려 볼 수도 있게.
 - 용머리, 등껍질 덮개와 쇠못, 노, 돛 같은 거북선의 특징이 잘 보이게 최대한 멋지게 만들어 줘.
-- 코드만 답해 줘.</pre></div>
-  </div>
-</article>
-<article class="item has-media" id="webcam">
-  <div class="media"><div class="noimg">카메라가 있어야<br>보이는 결과</div></div>
-  <div class="text">
-    <h2>손으로 연주하는 웹캠 악기</h2>
-    <p class="what">손을 위아래로 움직이면 음 높이가, 쥐었다 펴면 음량이 바뀝니다.</p>
-    <p class="meta">34초 · 출력 2,661토큰 · 약 38원</p>
-    <p class="check"><span class="tag">확인</span>오류 없이 카메라 화면까지 뜨는 것은 확인했습니다. 손 인식은 직접 손을 대 보십시오. '결과 열기'에서 카메라를 허락하면 바로 됩니다.</p>
-    <div class="actions"><a class="open" href="files/02_webcam_instrument.html" target="_blank" rel="noopener">결과 열기</a><a class="dl" href="files/02_webcam_instrument.html" download>파일 받기</a></div>
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-webcam">복사</button></div><pre id="p-webcam">웹캠으로 손을 인식해서 소리를 내는 악기를 HTML 파일 하나로 만들어 줘.
+- 코드만 답해 줘.</pre></div></div></article><article class="item" id="webcam"><div class="shot empty"><p>카메라를 켜야<br>보이는 결과</p></div><div class="body"><div class="kind">웹캠 + 소리</div><h2>손으로 연주하는 웹캠 악기</h2><p class="what">손을 위아래로 움직이면 음 높이가, 쥐었다 펴면 음량이 바뀝니다.</p><p class="meta">34초 · 출력 2,661토큰 · 약 38원</p><p class="check"><b>확인</b>오류 없이 카메라 화면까지 뜨는 것은 확인했습니다. 손 인식은 직접 손을 대 보십시오. &#x27;결과 열기&#x27;에서 카메라를 허락하면 됩니다.</p><div class="actions"><a class="btn primary" href="files/02_webcam_instrument.html" target="_blank" rel="noopener">결과 열기 →</a><a class="btn" href="files/02_webcam_instrument.html" download>파일 받기</a></div><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-webcam">복사</button></div><pre id="p-webcam">웹캠으로 손을 인식해서 소리를 내는 악기를 HTML 파일 하나로 만들어 줘.
 - MediaPipe Hands를 CDN에서 불러와.
 - 손을 위아래로 움직이면 음 높이, 손을 쥐었다 펴면 음량이 바뀌게 해 줘(Web Audio).
 - 화면에 웹캠 영상, 손가락 점, 지금 음 이름(도레미)을 크게 보여 줘.
 - &#x27;시작&#x27; 버튼을 눌러야 카메라와 소리가 켜지게 해 줘.
-- 코드만 답해 줘.</pre></div>
-  </div>
-</article>
-<article class="item has-media" id="yut">
-  <div class="media"><img src="img/03.jpg" alt="윷놀이 결과 화면" loading="lazy"></div>
-  <div class="text">
-    <h2>윷놀이</h2>
-    <p class="what">2인용입니다. 윷가락이 굴러가고 도·개·걸·윷·모(빽도 포함), 잡기와 업기까지 들어 있습니다.</p>
-    <p class="meta">108초 · 출력 8,904토큰 · 약 125원</p>
-    <p class="check"><span class="tag">확인</span>윷 던지기와 결과(도)가 나오는 것까지 확인했습니다.</p>
-    <div class="actions"><a class="open" href="files/03_yut_game.html" target="_blank" rel="noopener">결과 열기</a><a class="dl" href="files/03_yut_game.html" download>파일 받기</a></div>
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-yut">복사</button></div><pre id="p-yut">윷놀이 게임을 HTML 파일 하나로 만들어 줘.
+- 코드만 답해 줘.</pre></div></div></article><article class="item" id="yut"><div class="shot"><img src="img/03.jpg" alt="윷놀이 결과 화면" loading="lazy"></div><div class="body"><div class="kind">게임</div><h2>윷놀이</h2><p class="what">2인용입니다. 윷가락이 굴러가고 도·개·걸·윷·모(빽도 포함), 잡기와 업기까지 들어 있습니다.</p><p class="meta">108초 · 출력 8,904토큰 · 약 125원</p><p class="check"><b>확인</b>윷 던지기와 결과(도)가 나오는 것까지 확인했습니다.</p><div class="actions"><a class="btn primary" href="files/03_yut_game.html" target="_blank" rel="noopener">결과 열기 →</a><a class="btn" href="files/03_yut_game.html" download>파일 받기</a></div><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-yut">복사</button></div><pre id="p-yut">윷놀이 게임을 HTML 파일 하나로 만들어 줘.
 - 2명이 번갈아 하는 게임, 말은 각자 4개.
 - &#x27;윷 던지기&#x27; 버튼을 누르면 윷가락 4개가 굴러가는 애니메이션 뒤에 도·개·걸·윷·모(빽도 포함)가 나와.
 - 윷판(29칸, 지름길 포함)을 그리고, 말을 눌러서 옮겨. 잡기, 업기, 윷·모·잡으면 한 번 더 규칙을 넣어 줘.
 - 한국 전통 느낌의 색으로 예쁘게.
-- 코드만 답해 줘.</pre></div>
-  </div>
-</article>
-<article class="item has-media" id="namsan">
-  <div class="media"><img src="img/04.jpg" alt="남산타워 야경 3D 결과 화면" loading="lazy"></div>
-  <div class="text">
-    <h2>남산타워 야경 3D</h2>
-    <p class="what">남산서울타워 주위를 카메라가 천천히 돌고, 아래로 도시 불빛과 한강이 반짝입니다.</p>
-    <p class="meta">76초 + 고치기 78초 · 약 194원</p>
-    <p class="check"><span class="tag">확인</span>첫 결과는 오류(i is not defined)로 화면이 까맸습니다. 오류 문장을 붙여 한 번 고치라고 하니 됐습니다.</p>
-    <div class="actions"><a class="open" href="files/04_namsan_tower_3d.html" target="_blank" rel="noopener">결과 열기</a><a class="dl" href="files/04_namsan_tower_3d.html" download>파일 받기</a></div>
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-namsan">복사</button></div><pre id="p-namsan">three.js로 밤의 남산서울타워와 서울 야경을 3D로 만들어 줘.
+- 코드만 답해 줘.</pre></div></div></article><article class="item" id="namsan"><div class="shot"><img src="img/04.jpg" alt="남산타워 야경 3D 결과 화면" loading="lazy"></div><div class="body"><div class="kind">3D 장면</div><h2>남산타워 야경 3D</h2><p class="what">남산서울타워 주위를 카메라가 천천히 돌고, 아래로 도시 불빛과 한강이 반짝입니다.</p><p class="meta">76초 + 고치기 78초 · 약 194원</p><p class="check"><b>확인</b>첫 결과는 오류(i is not defined)로 화면이 까맸습니다. 오류 문장을 붙여 한 번 고치라고 하니 됐습니다.</p><div class="actions"><a class="btn primary" href="files/04_namsan_tower_3d.html" target="_blank" rel="noopener">결과 열기 →</a><a class="btn" href="files/04_namsan_tower_3d.html" download>파일 받기</a></div><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-namsan">복사</button></div><pre id="p-namsan">three.js로 밤의 남산서울타워와 서울 야경을 3D로 만들어 줘.
 - HTML 파일 하나로, three.js는 CDN에서 불러와.
 - 남산 위에 타워, 아래로 반짝이는 도시 불빛과 한강, 하늘엔 별. 카메라가 천천히 타워 주위를 돌아.
 - 마우스로 돌려 볼 수도 있게.
-- 최대한 멋지게. 코드만 답해 줘.</pre></div>
-  </div>
-</article>
-<article class="item" id="fortran">
-  
-  <div class="text">
-    <h2>옛 포트란 코드를 파이썬으로</h2>
-    <p class="what">GOTO가 섞인 포트란 기온 통계 코드를 요즘 파이썬으로 바꾸고 테스트까지 붙였습니다.</p>
-    <p class="meta">22초 · 출력 1,435토큰 · 약 21원</p>
-    <p class="check"><span class="tag">확인</span>바꾼 코드의 출력이 원래 형식과 같고, 아르곤이 준 테스트 3개가 모두 통과했습니다.</p>
-    
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-fortran">복사</button></div><pre id="p-fortran">아래 옛날 포트란 코드를 요즘 파이썬으로 바꿔 줘.
+- 최대한 멋지게. 코드만 답해 줘.</pre></div></div></article><article class="item" id="fortran"><div class="shot empty"><p>카메라를 켜야<br>보이는 결과</p></div><div class="body"><div class="kind">코드 변환</div><h2>옛 포트란 코드를 파이썬으로</h2><p class="what">GOTO가 섞인 포트란 기온 통계 코드를 요즘 파이썬으로 바꾸고 테스트까지 붙였습니다.</p><p class="meta">22초 · 출력 1,435토큰 · 약 21원</p><p class="check"><b>확인</b>바꾼 코드의 출력이 원래 형식과 같고, 아르곤이 준 테스트 3개가 모두 통과했습니다.</p><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-fortran">복사</button></div><pre id="p-fortran">아래 옛날 포트란 코드를 요즘 파이썬으로 바꿔 줘.
 - 동작은 똑같이, 읽기 쉽게.
 - 바꾼 코드가 같은 결과를 내는지 확인하는 테스트도 같이 줘.
 - 원래 코드가 뭘 하는지 세 줄로 먼저 설명해 줘.
@@ -290,18 +259,7 @@ if __name__ == &quot;__main__&quot;:
 
 #### 변경 포인트 요약
 * **반복문 제거:** 포트란의 `10 IF ... GOTO 20` 루프와 `DO 30` 루프를 파이썬 내장 함수(`sum`, `max`, `min`)로 대체하여 가독성을 높였습니다.
-* **출력 형식 완벽 재현:** 포트란의 `F6.2`(전체 6자리, 소수점 2자리)와 `I3`(3자리 정수) 포맷을 파이썬의 `f-string` 포맷팅(`{값:6.2f}`, `{값:3d}`)으로 똑같이 구현해 공백 하나까지 동일하게 출력됩니다.</pre></details>
-  </div>
-</article>
-<article class="item" id="security">
-  
-  <div class="text">
-    <h2>내 코드 보안 구멍 점검</h2>
-    <p class="what">일부러 구멍을 심어 둔 파이썬 웹 서버 코드를 주고 전부 찾아 고치라고 했습니다.</p>
-    <p class="meta">154초 · 출력 2,342토큰 · 약 37원</p>
-    <p class="check"><span class="tag">확인</span>심어 둔 구멍 6개(명령어 삽입, 디버그 모드 노출, SQL 인젝션, 경로 조작, 하드코딩된 비밀키, XSS)를 모두 찾았습니다.</p>
-    
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-security">복사</button></div><pre id="p-security">아래 코드에서 보안 구멍을 전부 찾아 줘.
+* **출력 형식 완벽 재현:** 포트란의 `F6.2`(전체 6자리, 소수점 2자리)와 `I3`(3자리 정수) 포맷을 파이썬의 `f-string` 포맷팅(`{값:6.2f}`, `{값:3d}`)으로 똑같이 구현해 공백 하나까지 동일하게 출력됩니다.</pre></details></div></article><article class="item" id="security"><div class="shot empty"><p>카메라를 켜야<br>보이는 결과</p></div><div class="body"><div class="kind">보안 점검</div><h2>내 코드 보안 구멍 점검</h2><p class="what">일부러 구멍을 심어 둔 파이썬 웹 서버 코드를 주고 전부 찾아 고치라고 했습니다.</p><p class="meta">154초 · 출력 2,342토큰 · 약 37원</p><p class="check"><b>확인</b>심어 둔 구멍 6개(명령어 삽입, 디버그 모드 노출, SQL 인젝션, 경로 조작, 하드코딩된 비밀키, XSS)를 모두 찾았습니다.</p><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-security">복사</button></div><pre id="p-security">아래 코드에서 보안 구멍을 전부 찾아 줘.
 - 위험한 순서로, 구멍마다 ① 어디가 ② 왜 위험한지(공격 예시 한 줄) ③ 어떻게 고치는지.
 - 마지막에 다 고친 전체 코드를 줘.
 
@@ -457,18 +415,7 @@ def admin():
 if __name__ == &quot;__main__&quot;:
     # [수정 2] 디버그 모드 비활성화 및 로컬호스트 바인딩 (운영 환경에서는 WSGI 서버 사용 권장)
     app.run(debug=False, host=&quot;127.0.0.1&quot;, port=5000)
-```</pre></details>
-  </div>
-</article>
-<article class="item has-media" id="dashboard">
-  <div class="media"><img src="img/07.jpg" alt="표를 붙여 넣으면 대시보드 결과 화면" loading="lazy"></div>
-  <div class="text">
-    <h2>표를 붙여 넣으면 대시보드</h2>
-    <p class="what">월별 매출 표 하나로 핵심 숫자 카드와 차트가 있는 한 장짜리 대시보드를 만듭니다.</p>
-    <p class="meta">37초 · 출력 2,840토큰 · 약 41원</p>
-    <p class="check"><span class="tag">확인</span>연 매출 합계 2억 8,910만 원, 전년 대비 +9.6%가 직접 계산한 값과 같습니다.</p>
-    <div class="actions"><a class="open" href="files/07_table_to_dashboard.html" target="_blank" rel="noopener">결과 열기</a><a class="dl" href="files/07_table_to_dashboard.html" download>파일 받기</a></div>
-    <div class="block"><div class="block-head"><span>주문문</span><button type="button" class="copy" data-target="p-dashboard">복사</button></div><pre id="p-dashboard">아래 표로 한눈에 보는 대시보드를 HTML 파일 하나로 만들어 줘.
+```</pre></details></div></article><article class="item" id="dashboard"><div class="shot"><img src="img/07.jpg" alt="표를 붙여 넣으면 대시보드 결과 화면" loading="lazy"></div><div class="body"><div class="kind">데이터</div><h2>표를 붙여 넣으면 대시보드</h2><p class="what">월별 매출 표 하나로 핵심 숫자 카드와 차트가 있는 한 장짜리 대시보드를 만듭니다.</p><p class="meta">37초 · 출력 2,840토큰 · 약 41원</p><p class="check"><b>확인</b>연 매출 합계 2억 8,910만 원, 전년 대비 +9.6%가 직접 계산한 값과 같습니다.</p><div class="actions"><a class="btn primary" href="files/07_table_to_dashboard.html" target="_blank" rel="noopener">결과 열기 →</a><a class="btn" href="files/07_table_to_dashboard.html" download>파일 받기</a></div><div class="prompt"><div class="prompt-head"><span>주문문</span><button type="button" class="copy" data-target="p-dashboard">복사</button></div><pre id="p-dashboard">아래 표로 한눈에 보는 대시보드를 HTML 파일 하나로 만들어 줘.
 - 차트는 Chart.js를 CDN에서 불러와.
 - 맨 위에 핵심 숫자 카드 3개(연 매출 합계, 가장 잘 된 달, 전년 대비), 아래에 월별 매출 막대와 방문객 선 그래프.
 - 휴대폰 화면에서도 보기 좋게, 어두운 배경으로.
@@ -486,18 +433,7 @@ if __name__ == &quot;__main__&quot;:
 9,2560,3360,2410
 10,2390,3150,2240
 11,2150,2840,2060
-12,2870,3690,2620</pre></div>
-  </div>
-</article>
-<article class="item" id="api">
-  
-  <div class="text">
-    <h2>API로 아르곤 부르는 최소 코드</h2>
-    <p class="what">파이썬 열 몇 줄입니다. 답과 함께 이번에 쓴 토큰과 돈을 계산해 보여 줍니다.</p>
-    <p class="meta">한 번에 약 3원</p>
-    <p class="check"><span class="tag">확인</span>우리 계정으로 실제로 돌려 봤습니다.</p>
-    
-    <div class="block"><div class="block-head"><span>argon_hello.py · <a class="inline-dl" href="files/argon_hello.py" download>파일 받기</a></span><button type="button" class="copy" data-target="c-api">복사</button></div><pre id="c-api"># 아르곤을 API로 부르는 가장 짧은 코드
+12,2870,3690,2620</pre></div></div></article><article class="item" id="api"><div class="shot empty"><p>카메라를 켜야<br>보이는 결과</p></div><div class="body"><div class="kind">API</div><h2>API로 아르곤 부르는 최소 코드</h2><p class="what">파이썬 열 몇 줄입니다. 답과 함께 이번에 쓴 토큰과 돈을 계산해 보여 줍니다.</p><p class="meta">한 번에 약 3원</p><p class="check"><b>확인</b>우리 계정으로 실제로 돌려 봤습니다.</p><div class="prompt"><div class="prompt-head"><span>argon_hello.py · <a href="files/argon_hello.py" download>파일 받기</a></span><button type="button" class="copy" data-target="c-api">복사</button></div><pre class="code" id="c-api"># 아르곤을 API로 부르는 가장 짧은 코드
 # 준비: pip install google-genai
 #       AI 스튜디오(aistudio.google.com)에서 API 키 발급 + 결제 등록 (아르곤은 무료 구간 없음)
 import os
@@ -516,16 +452,14 @@ u = res.usage_metadata
 out = (u.candidates_token_count or 0) + (u.thoughts_token_count or 0)
 usd = u.prompt_token_count / 1e6 * 2 + out / 1e6 * 10
 print(f&quot;입력 {u.prompt_token_count} 토큰, 출력 {out} 토큰, 약 {usd:.4f}달러 (약 {usd * 1400:.0f}원)&quot;)
-</pre></div>
-  </div>
-</article>
-  </div>
-  <footer>
-    <span>비용은 우리 시험에서 나온 토큰 수에 도입가와 1달러 1,400원을 곱한 값입니다.</span>
-    <span>2026. 10. 27. 테크조간이 직접 돌려 보고 확인했습니다.</span>
-  </footer>
-</div>
-<script>
+</pre></div></div></article></section>
+<footer>
+  <img src="../wordmark.png" alt="테크조간">
+  <span>혁신? 일단 의심. 직접 돌려 보고 확인한 것만 올립니다.</span>
+  <span><a href="https://www.youtube.com/@테크조간">youtube.com/@테크조간</a></span>
+  <span>비용은 우리 시험에서 나온 토큰 수에 도입가와 1달러 1,400원을 곱한 값입니다.</span>
+</footer>
+</div><script>
 document.querySelectorAll('.copy').forEach(function (b) {
   b.addEventListener('click', function () {
     var pre = document.getElementById(b.dataset.target);
@@ -534,6 +468,4 @@ document.querySelectorAll('.copy').forEach(function (b) {
     try { navigator.clipboard.writeText(pre.innerText).then(done, fallback); } catch (e) { fallback(); }
   });
 });
-</script>
-</body>
-</html>
+</script></body></html>
