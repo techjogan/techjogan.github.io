@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>챗GPT 테라 크롬 세팅법 + 프롬프트 · 테크조간</title>
+<meta name="description" content="챗GPT GPT-6.1 테라에게 내 크롬을 맡기는 세팅법과, 영상에서 회사 일 세 개를 시킨 프롬프트를 그대로 모았습니다.">
+<meta property="og:title" content="챗GPT 테라 크롬 세팅법 + 프롬프트 · 테크조간">
+<meta property="og:description" content="챗GPT GPT-6.1 테라에게 내 크롬을 맡기는 세팅법과, 영상에서 회사 일 세 개를 시킨 프롬프트를 그대로 모았습니다.">
+<meta property="og:image" content="https://techjogan.github.io/terra/img/01.jpg">
+<meta name="theme-color" content="#111111">
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: brand-dark single column; the wordmark leads, hairlines separate entries, orange only on the primary action and small labels */
+:root {
+  --bg:#111111; --panel:#1a1a1a; --line:#2a2a2a; --text:#f2f2f0; --sub:#c9ccd2; --dim:#8b8e94; --orange:#e26a14; --orange-hi:#f37d2b;
+  --sans:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,"Pretendard Variable",monospace;
+  color-scheme:dark;
+}
+* { box-sizing:border-box; }
+html { background:var(--bg); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.7; letter-spacing:-0.01em; word-break:keep-all; overflow-wrap:anywhere;
+  padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); padding-block:max(20px, env(safe-area-inset-top, 0px)) 72px; -webkit-font-smoothing:antialiased; }
+a { color:inherit; }
+.wrap { max-width:47rem; margin:0 auto; }
+.top { display:flex; align-items:center; justify-content:space-between; padding-block:8px 36px; }
+.top img { height:22px; width:auto; display:block; }
+.top span { font-size:13px; color:var(--dim); }
+.label { font-family:var(--mono); font-size:12.5px; color:var(--dim); letter-spacing:0; font-variant-numeric:tabular-nums; }
+h1 { font-size:clamp(30px, 6.6vw, 46px); line-height:1.18; font-weight:800; letter-spacing:-0.04em; margin:10px 0 0; text-wrap:balance; }
+.lead { color:var(--sub); margin:16px 0 0; max-width:38em; }
+.stats { display:flex; flex-wrap:wrap; margin:28px 0 0; padding:0; list-style:none; }
+.stats li { padding-right:22px; margin-right:22px; border-right:1px solid var(--line); }
+.stats li:last-child { border-right:0; margin-right:0; padding-right:0; }
+.stats b { font-size:26px; font-weight:700; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; }
+.stats small { font-size:13.5px; color:var(--dim); margin-left:4px; }
+.sec-title { font-size:13px; font-weight:700; color:var(--orange); margin:0 0 6px; }
+.how { margin:44px 0 0; }
+.how dl { margin:0; }
+.how .row { display:grid; grid-template-columns:7.5em minmax(0, 1fr); gap:16px; padding:14px 0; border-top:1px solid var(--line); }
+.how dt { font-weight:700; }
+.how dd { margin:0; color:var(--sub); }
+.items { margin:52px 0 0; }
+.item { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:28px; padding:32px 0; border-top:1px solid var(--line); }
+.shot { border-radius:10px; overflow:hidden; background:#000; aspect-ratio:4 / 3; max-width:100%; }
+.shot img { width:100%; height:100%; object-fit:cover; display:block; }
+.shot.empty { display:flex; align-items:flex-end; padding:16px; background:var(--panel); border:1px solid var(--line); }
+.shot.empty p { margin:0; font-size:14px; color:var(--dim); line-height:1.5; }
+.shot.empty p::after { content:""; display:inline-block; width:0.5em; height:0.12em; background:var(--orange); margin-left:4px; }
+.body { display:grid; gap:12px; align-content:start; min-width:0; }
+.kind { font-family:var(--mono); font-size:12px; color:var(--orange); letter-spacing:0; }
+h2 { font-size:23px; line-height:1.3; font-weight:700; letter-spacing:-0.03em; margin:-4px 0 0; text-wrap:balance; }
+.what { margin:0; color:var(--sub); }
+.meta { margin:0; font-family:var(--mono); font-size:12.5px; color:var(--dim); font-variant-numeric:tabular-nums; letter-spacing:0; }
+.check { margin:0; font-size:14.5px; color:var(--sub); padding-left:12px; border-left:2px solid var(--orange); }
+.check b { color:var(--text); font-weight:700; margin-right:6px; }
+.actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+.btn { display:inline-flex; align-items:center; gap:6px; font-size:15px; font-weight:700; text-decoration:none; padding:10px 16px; border-radius:8px; border:1px solid var(--line); color:var(--text); background:transparent; transition:border-color .15s, background .15s; }
+.btn.primary { background:var(--orange); border-color:var(--orange); color:#111; }
+.btn.primary:hover { background:var(--orange-hi); border-color:var(--orange-hi); }
+.btn:hover { border-color:var(--sub); }
+.btn:focus-visible, .copy:focus-visible, summary:focus-visible, .kit:focus-visible, .top a:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
+.prompt { background:var(--panel); border-radius:10px; overflow:hidden; min-width:0; }
+.prompt-head { display:flex; justify-content:space-between; align-items:center; padding:8px 8px 8px 14px; font-size:13px; color:var(--dim); border-bottom:1px solid var(--line); }
+.prompt-head a { color:var(--orange); }
+.copy { font:inherit; font-size:13px; font-weight:700; color:var(--text); background:#262626; border:0; border-radius:6px; padding:4px 12px; cursor:pointer; }
+.copy:hover { background:#303030; }
+.prompt pre { margin:0; padding:14px; font-family:var(--sans); font-size:14.5px; line-height:1.65; color:var(--sub); white-space:pre-wrap; max-height:15rem; overflow:auto; }
+.prompt pre.code, details pre { font-family:var(--mono); font-size:13px; line-height:1.6; letter-spacing:0; }
+details { background:var(--panel); border-radius:10px; overflow:hidden; }
+summary { cursor:pointer; padding:10px 14px; font-weight:700; font-size:14.5px; list-style:none; display:flex; justify-content:space-between; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:"+"; color:var(--dim); font-weight:400; }
+details[open] summary::after { content:"−"; }
+details pre { margin:0; padding:14px; color:var(--sub); white-space:pre-wrap; max-height:30rem; overflow:auto; border-top:1px solid var(--line); }
+footer { margin-top:56px; padding-top:24px; border-top:1px solid var(--line); display:grid; gap:6px; font-size:13.5px; color:var(--dim); }
+footer img { height:18px; width:auto; margin-bottom:8px; }
+.brand .hero { padding-block:clamp(40px, 12vw, 120px) 24px; display:grid; gap:20px; }
+.brand .mark { width:min(100%, 26rem); height:auto; display:block; }
+.brand .tag { margin:8px 0 0; font-size:clamp(30px, 7vw, 48px); font-weight:800; line-height:1.15; letter-spacing:-0.04em; }
+.brand .tag span { color:var(--sub); } .brand .tag em { font-style:normal; color:var(--orange); }
+.cursor { display:inline-block; width:0.42em; height:0.1em; background:var(--orange); margin-left:0.12em; vertical-align:baseline; animation:blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity:0; } }
+.brand .intro { margin:4px 0 0; color:var(--sub); font-size:17px; max-width:34em; }
+.principles, .contact { margin-top:56px; }
+.principles dl { margin:0; }
+.p-row { display:grid; grid-template-columns:9em minmax(0, 1fr); gap:16px; padding:18px 0; border-top:1px solid var(--line); }
+.p-row dt { font-weight:700; font-size:18px; letter-spacing:-0.02em; }
+.p-row dd { margin:0; color:var(--sub); }
+.mail { margin:0; font-family:var(--mono); font-size:15px; letter-spacing:0; user-select:all; }
+@media (max-width: 680px) { .p-row { grid-template-columns:1fr; gap:4px; } }
+@media (prefers-reduced-motion: reduce) { .cursor { animation:none; } }
+.hub-head { padding-block:24px 8px; }
+.hub-head img { height:48px; width:auto; display:block; }
+.tagline { margin:18px 0 0; font-size:20px; font-weight:700; line-height:1.35; letter-spacing:-0.02em; }
+.tagline span { color:var(--sub); } .tagline em { font-style:normal; color:var(--orange); }
+.kits { margin:44px 0 0; }
+.kit { display:grid; grid-template-columns:6.5rem minmax(0, 1fr); gap:18px; align-items:center; padding:20px 0; border-top:1px solid var(--line); text-decoration:none; }
+.kit img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; display:block; }
+.kit h2 { font-size:20px; margin:4px 0 0; }
+.kit p { margin:4px 0 0; color:var(--sub); font-size:15px; }
+.kit:hover h2 { color:var(--orange); }
+@media (max-width: 680px) {
+  .item { grid-template-columns:1fr; gap:18px; padding:28px 0; }
+  .shot { aspect-ratio:16 / 10; }
+  .how .row { grid-template-columns:1fr; gap:2px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><a href="../" aria-label="테크조간"><img src="../wordmark.png" alt="테크조간"></a><span>영상 자료</span></div>
+<div class="label">002 · 2026. 10. 28. · 챗GPT GPT-6.1 테라</div>
+<h1>챗GPT 테라 크롬 세팅법 + 프롬프트</h1>
+<p class="lead">테라한테 내 크롬을 맡기는 세팅에서 한 시간을 날렸습니다. 그 삽질 안 하시라고 순서대로 적었습니다. 아래 프롬프트 세 개는 영상에서 그대로 쓴 것이고, 결과는 직접 대조했습니다.</p>
+<ul class="stats"><li><b>22</b><small>분, 세 개 합쳐</small></li><li><b>0</b><small>통 보낸 메일</small></li><li><b>20/20</b><small>영수증 금액 정답</small></li></ul>
+<section class="how"><p class="sec-title">세팅 순서 (한 시간 삽질한 결과)</p><dl><div class="row"><dt>준비물</dt><dd>ChatGPT Plus 이상(월 20달러, 부가세 별도), ChatGPT 데스크톱 앱, 크롬. 우리는 맥에서 확인했습니다.</dd></div><div class="row"><dt>1. 앱 설치</dt><dd>chatgpt.com에서 ChatGPT 데스크톱 앱을 받아 로그인합니다. 예전 &#x27;ChatGPT Classic&#x27; 앱에는 이 기능이 없습니다.</dd></div><div class="row"><dt>2. 크롬 확장</dt><dd>앱 설정 → Computer Use → Chrome에서 설치를 누르면 크롬 웹 스토어의 ChatGPT 확장이 열립니다. 쓸 크롬 프로필에 추가하십시오. 설정에 &#x27;관리&#x27;가 보이면 연결된 것입니다.</dd></div><div class="row"><dt>3. Codex 모드</dt><dd>여기서 막혔습니다. 업무(Work) 모드의 @ 메뉴에는 Chrome이 안 뜹니다. 왼쪽 사이드바에서 Codex로 들어가 새 대화를 열고 @를 치면 Chrome이 있습니다. 모델은 GPT-6.1 Terra를 고르십시오. 우리는 추론 High로 돌렸습니다.</dd></div><div class="row"><dt>4. 보이게 하기</dt><dd>그냥 시키면 뒤쪽 탭에서 조용히 일합니다. 지켜보려면 프롬프트 끝에 &#x27;처음부터 끝까지 브라우저 작업은 전부 크롬 맨 앞 탭에서 내가 지켜볼 수 있게 보이게 하고 진행해 줘&#x27;를 붙이십시오.</dd></div><div class="row"><dt>5. 파일 올리기</dt><dd>내 컴퓨터 파일을 드라이브에 올리게 하려면 주소창에 chrome://extensions → ChatGPT 확장 → 세부정보 → &#x27;파일 URL에 대한 액세스 허용&#x27;을 켜십시오.</dd></div><div class="row"><dt>사고 막는 한 줄</dt><dd>메일, 결제, 삭제가 걸린 일에는 &#x27;초안만 쓰고, 보내지는 마&#x27;를 꼭 붙이십시오. 우리 시험에선 지켰지만, 오픈AI 보고서에는 허락 없이 움직인 비율이 13.75%로 나옵니다.</dd></div></dl></section>
+<section class="items"><article class="item" id="receipts"><div class="shot"><img src="img/01.jpg" alt="영수증 20장 → 경비정산서 결과 화면" loading="lazy"></div><div class="body"><div class="kind">구글 시트</div><h2>영수증 20장 → 경비정산서</h2><p class="what">법카 영수증 사진 20장과 회사 경비정산서 양식(엑셀)을 주면, 드라이브에 올려 구글 시트로 열고 사용일자순으로 채웁니다.</p><p class="meta">8분 · 영수증 20장 · 합계 1,021,300원</p><p class="check"><b>확인</b>날짜·가게·금액 20건 모두 정답, 합계도 원 단위까지 맞았습니다. 계정과목은 16/20: 카페는 회의비 대신 식대로, 386,000원 한우 회식은 식대로 넣고 &#x27;확인 필요&#x27;를 달았습니다.</p><div class="prompt"><div class="prompt-head"><span>프롬프트</span><button type="button" class="copy" data-target="p-receipts">복사</button></div><pre id="p-receipts">@Chrome 10월 법인카드 경비정산 좀 해 줘. 영수증 사진 20장이랑 회사 경비정산서 양식이 이 폴더에 있어: [영수증 사진과 양식이 든 폴더 경로]
+양식을 구글 드라이브에 올려서 구글 시트로 열고, 영수증을 한 장씩 보고 채워 줘.
+- 사용일자 순서로 적어 줘
+- 계정과목은 양식에 있는 목록에서 골라 줘
+- 부서 영업2팀, 성명 이도윤, 직급 대리, 정산기간 2026-10-01 ~ 2026-10-31
+다 하면 합계 금액이랑 시트 주소 알려 줘. 내가 지켜볼 수 있게 크롬 창을 보이게 하고 진행해 줘.</pre></div></div></article><article class="item" id="weekly"><div class="shot"><img src="img/02.jpg" alt="팀원 엑셀 10개 → 임원보고 PPT 결과 화면" loading="lazy"></div><div class="body"><div class="kind">구글 시트 + 슬라이드</div><h2>팀원 엑셀 10개 → 임원보고 PPT</h2><p class="what">양식이 제각각인 주간실적 엑셀 10개를 취합하고, 부장님 지시대로 임원보고 슬라이드 5장을 만듭니다.</p><p class="meta">9분 · 엑셀 10개 → 취합 시트 + 슬라이드 5장</p><p class="check"><b>확인</b>계약 135.7백만 원, 전체 318.5백만 원, 담당자 10명, 거래처 Top 5까지 모두 정답입니다. 합계 줄 중복, 글자로 적힌 금액 같은 함정도 피했습니다. 슬라이드 디자인은 기본 수준입니다.</p><div class="prompt"><div class="prompt-head"><span>프롬프트 (부장님 지시까지 그대로)</span><button type="button" class="copy" data-target="p-weekly">복사</button></div><pre id="p-weekly">@Chrome 부장님이 내일 임원보고 자료를 오늘 중으로 달래. 아래 부장님 메시지대로 해 줘. 팀원 10명 주간실적 엑셀은 이 폴더에 있어: [실적 엑셀이 든 폴더 경로]
+취합은 구글 시트로, 보고 자료는 구글 슬라이드 5장으로 만들고, 둘 다 내 구글 드라이브에 저장해서 링크 알려 줘.
+처음부터 끝까지 브라우저 작업은 전부 크롬 맨 앞 탭에서 내가 지켜볼 수 있게 보이게 하고 진행해 줘.
+
+[부장님 메시지]
+도윤씨, 내일 오전 임원보고에 들어갈 영업2팀 10월 4주(10/19~10/23) 실적을 취합해서 임원보고용 슬라이드 5장으로 만들어 주세요. 팀원 10명이 보낸 주간실적 엑셀(weekly 폴더)은 사람마다 양식이 제각각이라 열 순서, 머리글, 금액 표기(숫자/글자), 빈 줄, 메모, 합계 줄까지 다 확인해서 같은 기준으로 맞춰 주시고, 매출은 &#x27;계약&#x27; 확정 기준과 견적·협의까지 포함한 &#x27;전체 파이프라인&#x27; 기준을 꼭 구분해 주세요. 1장은 요약 숫자(팀 계약 매출 합계, 전체 파이프라인 금액, 계약 건수/전체 건수), 2장은 담당자별 실적 막대그래프(계약 기준, 큰 순서, 전체 금액도 같이), 3장은 상위 거래처 Top 5(계약 기준 금액, 같은 회사가 이름만 다르게 적힌 건 하나로 합쳐서), 4장은 진행 중 건(견적·협의 중인 건을 금액 큰 순으로 5건 정도, 거래처·담당자·금액·상태), 5장은 다음 주 계획(진행 중 상위 건 클로징 목표와 재협의 건 회신 일정)으로 구성해 주세요. 금액은 백만 원 단위로 소수 첫째 자리까지만 쓰고, 디자인은 회사 기본 톤(남색 계열)으로 깔끔하게, 오늘 중으로 공유 드라이브에 올리고 링크만 보내 주면 됩니다.</pre></div></div></article><article class="item" id="mail"><div class="shot"><img src="img/03.jpg" alt="쌓인 메일 30통 정리 결과 화면" loading="lazy"></div><div class="body"><div class="kind">지메일 + 캘린더</div><h2>쌓인 메일 30통 정리</h2><p class="what">급한 것부터 알려 주고, 답장은 초안만 임시보관함에, 일정은 구글 캘린더에 넣습니다.</p><p class="meta">4분 42초 · 메일 30통 · 초안 6개 · 일정 7개</p><p class="check"><b>확인</b>보낸 메일 0통, 피싱 링크는 열지 않았고, 바뀐 교육 날짜도 맞게 넣었습니다. 단, 부장님 답장에 넣을 시트·슬라이드 링크는 못 찾고 빈칸으로 남겼습니다.</p><div class="prompt"><div class="prompt-head"><span>프롬프트</span><button type="button" class="copy" data-target="p-mail">복사</button></div><pre id="p-mail">@Chrome 지메일에 메일이 30통이나 쌓였어. 정리 좀 해 줘.
+- 급한 것부터 알려 줘
+- 답장이 필요한 건 답장 초안만 써서 임시보관함에 저장해 둬. 보내지는 마
+- 일정은 내 구글 캘린더에 넣어 줘
+처음부터 끝까지 브라우저 작업은 전부 크롬 맨 앞 탭에서 내가 지켜볼 수 있게 보이게 하고 진행해 줘.</pre></div></div></article></section>
+<footer>
+  <img src="../wordmark.png" alt="테크조간">
+  <span>혁신? 일단 의심. 직접 돌려 보고 확인한 것만 올립니다.</span>
+  <span><a href="https://www.youtube.com/@테크조간">youtube.com/@테크조간</a></span>
+  <span>시험: 2026년 10월 27일, 맥 ChatGPT 앱 26.1021 · GPT-6.1 Terra(추론 High) · 크롬 156. 회사, 사람, 영수증, 메일은 모두 시험용으로 만든 가짜입니다.</span>
+</footer>
+</div><script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var pre = document.getElementById(b.dataset.target);
+    var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+    var fallback = function () { var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = '선택됨'; };
+    try { navigator.clipboard.writeText(pre.innerText).then(done, fallback); } catch (e) { fallback(); }
+  });
+});
+</script></body></html>
