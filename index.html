@@ -48,6 +48,9 @@ h1 { font-size:clamp(30px, 6.6vw, 46px); line-height:1.18; font-weight:800; lett
 .item { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:28px; padding:32px 0; border-top:1px solid var(--line); }
 .shot { border-radius:10px; overflow:hidden; background:#000; aspect-ratio:4 / 3; max-width:100%; }
 .shot img { width:100%; height:100%; object-fit:cover; display:block; }
+.shot.tall { aspect-ratio:auto; }
+.shot.tall img { height:auto; object-fit:contain; }
+.item.noshot { grid-template-columns:minmax(0, 1fr); }
 .shot.empty { display:flex; align-items:flex-end; padding:16px; background:var(--panel); border:1px solid var(--line); }
 .shot.empty p { margin:0; font-size:14px; color:var(--dim); line-height:1.5; }
 .shot.empty p::after { content:""; display:inline-block; width:0.5em; height:0.12em; background:var(--orange); margin-left:4px; }

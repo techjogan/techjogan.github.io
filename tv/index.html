@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>삼성 TV 시청 정보 끄는 법 · 테크조간</title>
+<meta name="description" content="삼성 스마트 TV가 보고 있는 화면을 찍어 보내는 &#x27;시청 정보 서비스&#x27;와 맞춤 광고를 끄는 순서를 한 장으로 정리했습니다.">
+<meta property="og:title" content="삼성 TV 시청 정보 끄는 법 · 테크조간">
+<meta property="og:description" content="삼성 스마트 TV가 보고 있는 화면을 찍어 보내는 &#x27;시청 정보 서비스&#x27;와 맞춤 광고를 끄는 순서를 한 장으로 정리했습니다.">
+<meta property="og:image" content="https://techjogan.github.io/tv/img/sheet.png">
+<meta name="theme-color" content="#111111">
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: brand-dark single column; the wordmark leads, hairlines separate entries, orange only on the primary action and small labels */
+:root {
+  --bg:#111111; --panel:#1a1a1a; --line:#2a2a2a; --text:#f2f2f0; --sub:#c9ccd2; --dim:#8b8e94; --orange:#e26a14; --orange-hi:#f37d2b;
+  --sans:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,"Pretendard Variable",monospace;
+  color-scheme:dark;
+}
+* { box-sizing:border-box; }
+html { background:var(--bg); }
+body { margin:0; background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.7; letter-spacing:-0.01em; word-break:keep-all; overflow-wrap:anywhere;
+  padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); padding-block:max(20px, env(safe-area-inset-top, 0px)) 72px; -webkit-font-smoothing:antialiased; }
+a { color:inherit; }
+.wrap { max-width:47rem; margin:0 auto; }
+.top { display:flex; align-items:center; justify-content:space-between; padding-block:8px 36px; }
+.top img { height:22px; width:auto; display:block; }
+.top span { font-size:13px; color:var(--dim); }
+.label { font-family:var(--mono); font-size:12.5px; color:var(--dim); letter-spacing:0; font-variant-numeric:tabular-nums; }
+h1 { font-size:clamp(30px, 6.6vw, 46px); line-height:1.18; font-weight:800; letter-spacing:-0.04em; margin:10px 0 0; text-wrap:balance; }
+.lead { color:var(--sub); margin:16px 0 0; max-width:38em; }
+.stats { display:flex; flex-wrap:wrap; margin:28px 0 0; padding:0; list-style:none; }
+.stats li { padding-right:22px; margin-right:22px; border-right:1px solid var(--line); }
+.stats li:last-child { border-right:0; margin-right:0; padding-right:0; }
+.stats b { font-size:26px; font-weight:700; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; }
+.stats small { font-size:13.5px; color:var(--dim); margin-left:4px; }
+.sec-title { font-size:13px; font-weight:700; color:var(--orange); margin:0 0 6px; }
+.how { margin:44px 0 0; }
+.how dl { margin:0; }
+.how .row { display:grid; grid-template-columns:7.5em minmax(0, 1fr); gap:16px; padding:14px 0; border-top:1px solid var(--line); }
+.how dt { font-weight:700; }
+.how dd { margin:0; color:var(--sub); }
+.items { margin:52px 0 0; }
+.item { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:28px; padding:32px 0; border-top:1px solid var(--line); }
+.shot { border-radius:10px; overflow:hidden; background:#000; aspect-ratio:4 / 3; max-width:100%; }
+.shot img { width:100%; height:100%; object-fit:cover; display:block; }
+.shot.tall { aspect-ratio:auto; }
+.shot.tall img { height:auto; object-fit:contain; }
+.item.noshot { grid-template-columns:minmax(0, 1fr); }
+.shot.empty { display:flex; align-items:flex-end; padding:16px; background:var(--panel); border:1px solid var(--line); }
+.shot.empty p { margin:0; font-size:14px; color:var(--dim); line-height:1.5; }
+.shot.empty p::after { content:""; display:inline-block; width:0.5em; height:0.12em; background:var(--orange); margin-left:4px; }
+.body { display:grid; gap:12px; align-content:start; min-width:0; }
+.kind { font-family:var(--mono); font-size:12px; color:var(--orange); letter-spacing:0; }
+h2 { font-size:23px; line-height:1.3; font-weight:700; letter-spacing:-0.03em; margin:-4px 0 0; text-wrap:balance; }
+.what { margin:0; color:var(--sub); }
+.meta { margin:0; font-family:var(--mono); font-size:12.5px; color:var(--dim); font-variant-numeric:tabular-nums; letter-spacing:0; }
+.check { margin:0; font-size:14.5px; color:var(--sub); padding-left:12px; border-left:2px solid var(--orange); }
+.check b { color:var(--text); font-weight:700; margin-right:6px; }
+.actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
+.btn { display:inline-flex; align-items:center; gap:6px; font-size:15px; font-weight:700; text-decoration:none; padding:10px 16px; border-radius:8px; border:1px solid var(--line); color:var(--text); background:transparent; transition:border-color .15s, background .15s; }
+.btn.primary { background:var(--orange); border-color:var(--orange); color:#111; }
+.btn.primary:hover { background:var(--orange-hi); border-color:var(--orange-hi); }
+.btn:hover { border-color:var(--sub); }
+.btn:focus-visible, .copy:focus-visible, summary:focus-visible, .kit:focus-visible, .top a:focus-visible { outline:2px solid var(--orange); outline-offset:3px; }
+.prompt { background:var(--panel); border-radius:10px; overflow:hidden; min-width:0; }
+.prompt-head { display:flex; justify-content:space-between; align-items:center; padding:8px 8px 8px 14px; font-size:13px; color:var(--dim); border-bottom:1px solid var(--line); }
+.prompt-head a { color:var(--orange); }
+.copy { font:inherit; font-size:13px; font-weight:700; color:var(--text); background:#262626; border:0; border-radius:6px; padding:4px 12px; cursor:pointer; }
+.copy:hover { background:#303030; }
+.prompt pre { margin:0; padding:14px; font-family:var(--sans); font-size:14.5px; line-height:1.65; color:var(--sub); white-space:pre-wrap; max-height:15rem; overflow:auto; }
+.prompt pre.code, details pre { font-family:var(--mono); font-size:13px; line-height:1.6; letter-spacing:0; }
+details { background:var(--panel); border-radius:10px; overflow:hidden; }
+summary { cursor:pointer; padding:10px 14px; font-weight:700; font-size:14.5px; list-style:none; display:flex; justify-content:space-between; }
+summary::-webkit-details-marker { display:none; }
+summary::after { content:"+"; color:var(--dim); font-weight:400; }
+details[open] summary::after { content:"−"; }
+details pre { margin:0; padding:14px; color:var(--sub); white-space:pre-wrap; max-height:30rem; overflow:auto; border-top:1px solid var(--line); }
+footer { margin-top:56px; padding-top:24px; border-top:1px solid var(--line); display:grid; gap:6px; font-size:13.5px; color:var(--dim); }
+footer img { height:18px; width:auto; margin-bottom:8px; }
+.brand .hero { padding-block:clamp(40px, 12vw, 120px) 24px; display:grid; gap:20px; }
+.brand .mark { width:min(100%, 26rem); height:auto; display:block; }
+.brand .tag { margin:8px 0 0; font-size:clamp(30px, 7vw, 48px); font-weight:800; line-height:1.15; letter-spacing:-0.04em; }
+.brand .tag span { color:var(--sub); } .brand .tag em { font-style:normal; color:var(--orange); }
+.cursor { display:inline-block; width:0.42em; height:0.1em; background:var(--orange); margin-left:0.12em; vertical-align:baseline; animation:blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity:0; } }
+.brand .intro { margin:4px 0 0; color:var(--sub); font-size:17px; max-width:34em; }
+.principles, .contact { margin-top:56px; }
+.principles dl { margin:0; }
+.p-row { display:grid; grid-template-columns:9em minmax(0, 1fr); gap:16px; padding:18px 0; border-top:1px solid var(--line); }
+.p-row dt { font-weight:700; font-size:18px; letter-spacing:-0.02em; }
+.p-row dd { margin:0; color:var(--sub); }
+.mail { margin:0; font-family:var(--mono); font-size:15px; letter-spacing:0; user-select:all; }
+@media (max-width: 680px) { .p-row { grid-template-columns:1fr; gap:4px; } }
+@media (prefers-reduced-motion: reduce) { .cursor { animation:none; } }
+.hub-head { padding-block:24px 8px; }
+.hub-head img { height:48px; width:auto; display:block; }
+.tagline { margin:18px 0 0; font-size:20px; font-weight:700; line-height:1.35; letter-spacing:-0.02em; }
+.tagline span { color:var(--sub); } .tagline em { font-style:normal; color:var(--orange); }
+.kits { margin:44px 0 0; }
+.kit { display:grid; grid-template-columns:6.5rem minmax(0, 1fr); gap:18px; align-items:center; padding:20px 0; border-top:1px solid var(--line); text-decoration:none; }
+.kit img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; display:block; }
+.kit h2 { font-size:20px; margin:4px 0 0; }
+.kit p { margin:4px 0 0; color:var(--sub); font-size:15px; }
+.kit:hover h2 { color:var(--orange); }
+@media (max-width: 680px) {
+  .item { grid-template-columns:1fr; gap:18px; padding:28px 0; }
+  .shot { aspect-ratio:16 / 10; }
+  .how .row { grid-template-columns:1fr; gap:2px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body><div class="wrap">
+<div class="top"><a href="../" aria-label="테크조간"><img src="../wordmark.png" alt="테크조간"></a><span>영상 자료</span></div>
+<div class="label">003 · 2026. 10. 28. · 삼성 스마트 TV</div>
+<h1>삼성 TV 시청 정보 끄는 법</h1>
+<p class="lead">영상에서 말한 그 기능입니다. 메뉴 네 단계 안쪽에 숨어 있습니다. 두 개만 끄면 화면을 찍어 보내던 통신이 끊깁니다. TV 보는 데는 지장 없습니다. 아래 한 장을 저장해 두고 TV 앞에서 따라 하십시오.</p>
+<ul class="stats"><li><b>7,200</b><small>번, 한 시간에 찍는 횟수</small></li><li><b>4</b><small>단계 안쪽</small></li><li><b>2</b><small>개 끄면 끝</small></li></ul>
+<section class="how"><p class="sec-title">끄는 순서 (2024·2025년형 기준)</p><dl><div class="row"><dt>1. 설정</dt><dd>리모컨 홈 버튼을 누르고 왼쪽 메뉴에서 설정(톱니바퀴)으로 갑니다.</dd></div><div class="row"><dt>2. 전체 설정</dt><dd>설정 화면 아래쪽의 &#x27;전체 설정&#x27;을 엽니다.</dd></div><div class="row"><dt>3. 일반 및 개인 정보</dt><dd>목록에서 &#x27;일반 및 개인 정보&#x27;로 들어갑니다.</dd></div><div class="row"><dt>4. 약관 및 개인 정보</dt><dd>개인 정보 동의가 여기 모여 있습니다. TV에 따라 &#x27;설정 → 고객 지원 → 약관 및 개인 정보&#x27;에 있기도 합니다.</dd></div><div class="row"><dt>5. 시청 정보 서비스</dt><dd>끄십시오. 이게 핵심입니다. 보고 있는 화면을 인식해서 무엇을 보는지 삼성 서버로 보내는 기능(ACR)입니다. 게임기·노트북을 꽂은 화면도 여기에 걸립니다.</dd></div><div class="row"><dt>6. 관심 기반 광고</dt><dd>같이 끄십시오. 시청 기록으로 광고를 맞추는 기능입니다.</dd></div><div class="row"><dt>덤: 음성 인식</dt><dd>빅스비 음성을 안 쓰시면 같은 자리의 &#x27;음성 인식 서비스&#x27; 동의도 해제하십시오.</dd></div></dl></section>
+<section class="items"><article class="item" id="sheet"><div class="shot tall"><img src="img/sheet.png" alt="TV 앞에서 보는 한 장 결과 화면" loading="lazy"></div><div class="body"><div class="kind">한 장 정리</div><h2>TV 앞에서 보는 한 장</h2><p class="what">위 순서를 한 장에 담았습니다. 저장해 두거나 가족에게 보내십시오.</p><p class="meta">이미지 1080×1350</p><p class="check"><b>확인</b>메뉴 이름은 삼성전자서비스의 2024·2025년형 안내와 삼성 영어판 메뉴를 맞춰 본 것입니다. TV마다 한두 글자 다를 수 있습니다.</p><div class="actions"><a class="btn primary" href="img/sheet.png" target="_blank" rel="noopener">크게 보기 →</a><a class="btn" href="img/sheet.png" download>이미지 받기</a></div></div></article><article class="item noshot" id="names"><div class="body"><div class="kind">메뉴 이름이 다르면</div><h2>이 단어만 찾으십시오</h2><p class="what">&#x27;시청 정보&#x27;, &#x27;관심 기반&#x27;, &#x27;맞춤 광고&#x27;, &#x27;약관&#x27;, &#x27;개인 정보 보호&#x27;. 연식과 소프트웨어마다 이름과 위치가 조금씩 다릅니다. 오래된 TV에는 영어 &#x27;SyncPlus&#x27;가 들어간 항목으로 있다고 합니다.</p><p class="meta">위치: 설정 → 전체 설정 → 일반 및 개인 정보 / 설정 → 고객 지원</p><p class="check"><b>확인</b>메뉴 화면은 직접 찍지 못했습니다. 이름은 삼성 공식 안내와 해외 안내(Consumer Reports, Tom&#x27;s Guide, Malwarebytes)를 맞춰 본 것입니다.</p></div></article><article class="item noshot" id="after"><div class="body"><div class="kind">끄고 나서</div><h2>끄면 정말 멈추나</h2><p class="what">2024년 학회 논문(IMC 2024, 영국·미국에서 삼성·LG TV 통신을 잰 연구)에서 시청 정보 수집을 거부하자 ACR 서버와의 통신이 사라졌습니다. 같은 연구에서 삼성은 1분마다, LG는 15초마다 보냈습니다.</p><p class="meta">방송, 앱, HDMI 화면은 그대로 나옵니다</p><p class="check"><b>확인</b>통신이 끊긴다는 건 논문의 측정입니다. 우리가 TV 통신을 직접 잰 것은 아닙니다.</p></div></article><article class="item noshot" id="lg"><div class="body"><div class="kind">덤</div><h2>LG TV라면</h2><p class="what">LG는 &#x27;라이브 플러스(Live Plus)&#x27;가 같은 기능입니다. 설정 → 전체 설정 → 일반 → 시스템 → 추가 설정에서 라이브 플러스를 끄십시오. 같은 곳의 &#x27;광고&#x27;에서 맞춤 광고도 끌 수 있습니다.</p><p class="meta">webOS 버전마다 위치가 조금 다릅니다</p><p class="check"><b>확인</b>LG 메뉴도 직접 찍지 못했습니다. 해외 안내(Consumer Reports, Tom&#x27;s Guide)의 경로를 옮겼습니다.</p></div></article></section>
+<footer>
+  <img src="../wordmark.png" alt="테크조간">
+  <span>혁신? 일단 의심. 직접 돌려 보고 확인한 것만 올립니다.</span>
+  <span><a href="https://www.youtube.com/@테크조간">youtube.com/@테크조간</a></span>
+  <span>출처: 삼성전자서비스 메뉴 안내(2024·2025년형), 삼성 개인정보처리방침(스마트TV 등 기기용), IMC 2024 스마트 TV ACR 측정 논문, Malwarebytes(2026년 3월, 텍사스 합의), Consumer Reports, Tom&#x27;s Guide. 2026년 10월 28일 기준입니다.</span>
+</footer>
+</div><script>
+document.querySelectorAll('.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var pre = document.getElementById(b.dataset.target);
+    var done = function () { b.textContent = '복사됨'; setTimeout(function () { b.textContent = '복사'; }, 1500); };
+    var fallback = function () { var r = document.createRange(); r.selectNodeContents(pre); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = '선택됨'; };
+    try { navigator.clipboard.writeText(pre.innerText).then(done, fallback); } catch (e) { fallback(); }
+  });
+});
+</script></body></html>
